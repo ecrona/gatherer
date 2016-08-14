@@ -1,0 +1,29 @@
+{
+  "name": "gatherer",
+  "scripts": {
+    "build": "webpack"
+  },
+  "version": "0.1.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ecrona/gatherer.git"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ecrona/gatherer/issues"
+  },
+  "homepage": "https://github.com/ecrona/gatherer#readme",
+  "dependencies": {
+    "history": "^2.1.1",
+    "material-ui": "^0.15.4",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-router": "^2.6.1",
+    "react-tap-event-plugin": "^1.0.0",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "webpack": "^1.13.1"
+  }
+}
