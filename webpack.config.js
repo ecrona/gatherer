@@ -10,7 +10,7 @@ var config = {
     devtool: "source-map",
     resolve: {
         root: path.resolve('./src'),
-        extensions: ['', '.d.ts', '.ts', '.tsx', '.js']
+        extensions: ['', '.ts', '.tsx', '.js']
     },
     module: {
         loaders: [{
