@@ -8,23 +8,23 @@ interface State {
 }
 
 export class Shell extends React.Component<any, State> {
-	constructor(props: any, state: State) {
-		super(props, state);
-		
-		this.state = {
+    constructor(props: any, state: State) {
+        super(props, state);
+        
+        this.state = {
             initialLoad: true
-		};
-	}
-	
-	public render() {
-		if (!this.state.initialLoad) {
-			return (
-				<div>Loading ...</div>
-			)
-		}
-		
-		return (
-			<div>
+        };
+    }
+    
+    public render() {
+        if (!this.state.initialLoad) {
+            return (
+                <div>Loading ...</div>
+            )
+        }
+        
+        return (
+            <div>
                 <MuiThemeProvider>
                     <AppBar
                         title="Gatherer"
@@ -32,7 +32,7 @@ export class Shell extends React.Component<any, State> {
                         iconElementRight={<FlatButton label="Gather" />}
                     />
                 </MuiThemeProvider>
-			</div>
-		);
-	}
+            </div>
+        );
+    }
 }

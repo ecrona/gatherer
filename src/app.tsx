@@ -9,13 +9,13 @@ import { createHashHistory } from 'history';
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 const routes = {
-	path: '/',
-	component: Shell,
-	childRoutes: []
+    path: '/',
+    component: Shell,
+    childRoutes: []
 };
 
 ReactDOM.render(
-	<Router history={ appHistory } routes={ routes }>
-	</Router>,
-	document.getElementsByClassName('app')[0]
+    <Router history={ appHistory } routes={ routes }>
+    </Router>,
+    document.getElementsByClassName('app')[0]
 );
