@@ -9,18 +9,31 @@ import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 
 import { viewState } from 'components/reducers/viewState';
-import { test } from 'components/test';
 
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 const rootReducer = combineReducers({
-    viewState: viewState,
-    test: test
+    viewState: viewState
 });
 
 const initialState = {
     viewState: 1,
-    test: false
+    list: {
+        showGatherModal: false,
+        viewState: 'reports|unsorted'
+    },
+    gather: {
+        showSynchronizeModal: false,
+        status: 'play|pause',
+        time: '33:01',
+        primaryPlayer: {},
+        secondaryPlayer: {}
+    },
+    report: {
+        viewState: 'statistics|incremental',
+        primaryPlayer: {},
+        secondaryPlayer: {}
+    }
 };
 
 const store = createStore(rootReducer, initialState);
