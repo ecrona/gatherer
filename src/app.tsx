@@ -8,16 +8,19 @@ import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 
-import { viewState } from 'components/reducer';
+import { viewState } from 'components/reducers/viewState';
+import { test } from 'components/test';
 
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 const rootReducer = combineReducers({
-    viewState
+    viewState: viewState,
+    test: test
 });
 
 const initialState = {
-    viewState: 1
+    viewState: 1,
+    test: false
 };
 
 const store = createStore(rootReducer, initialState);

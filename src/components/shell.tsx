@@ -1,12 +1,13 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import * as React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import AppBar from 'material-ui/AppBar'
+import FlatButton from 'material-ui/FlatButton'
 
-import * as Actions from './actions';
+import { setViewState } from './actions/setViewState'
+import { ViewState } from './viewState'
 
 class Shell extends React.Component<any, any> {
     constructor(props: any) {
@@ -27,9 +28,9 @@ class Shell extends React.Component<any, any> {
                     />
                 </MuiThemeProvider>
                 <div>
-                    <a onClick={ () => dispatch(Actions.viewList()) }>List</a>
-                    <a onClick={ () => dispatch(Actions.viewDetail()) }>Detail</a>
-                    <a onClick={ () => dispatch(Actions.viewEdit()) }>Edit</a>
+                    <a onClick={ () => dispatch(setViewState(ViewState.List)) }>List</a>
+                    <a onClick={ () => dispatch(setViewState(ViewState.Gather)) }>Gather</a>
+                    <a onClick={ () => dispatch(setViewState(ViewState.Report)) }>Report</a>
                 </div>
                 <div>
                     State: { viewState }
