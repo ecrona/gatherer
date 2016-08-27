@@ -1,0 +1,33 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "history/history.d.ts": {
+      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+    },
+    "react-router/history.d.ts": {
+      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+    },
+    "react/react.d.ts": {
+      "commit": "73e712534896baf8f17b30bbf4f45f05d77f48c5"
+    },
+    "react/react-dom.d.ts": {
+      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+    },
+    "react-router/react-router.d.ts": {
+      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+    },
+    "material-ui/material-ui.d.ts": {
+      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+    },
+    "react-redux/react-redux.d.ts": {
+      "commit": "73e712534896baf8f17b30bbf4f45f05d77f48c5"
+    },
+    "redux/redux.d.ts": {
+      "commit": "73e712534896baf8f17b30bbf4f45f05d77f48c5"
+    }
+  }
+}
