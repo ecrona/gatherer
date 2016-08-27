@@ -1,28 +1,33 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
-import Shell from 'components/shell';
+import { Shell } from 'components/shell'
+import List from 'components/list/list';
 
-import { Router, Route, useRouterHistory } from 'react-router';
-import { createHashHistory } from 'history';
-import { Provider } from 'react-redux';
-import { combineReducers, createStore } from 'redux';
+import { Router, Route, useRouterHistory } from 'react-router'
+import { createHashHistory } from 'history'
+import { Provider } from 'react-redux'
+import { combineReducers, createStore } from 'redux'
 
-import { viewState } from 'components/reducers/viewState';
+import { viewState } from 'components/list/reducers/view-state'
+import { showGatherModal } from 'components/list/reducers/show-gather-modal';
 
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 const rootReducer = combineReducers({
-    viewState: viewState
+    list: combineReducers({
+        viewState: viewState,
+        showGatherModal: showGatherModal
+    })
 });
 
 const initialState = {
-    viewState: 1,
+    //viewState: 1,
     list: {
         showGatherModal: false,
-        viewState: 'reports|unsorted'
-    },
-    gather: {
+        viewState: 2
+    }
+    /*gather: {
         showSynchronizeModal: false,
         status: 'play|pause',
         time: '33:01',
@@ -33,7 +38,7 @@ const initialState = {
         viewState: 'statistics|incremental',
         primaryPlayer: {},
         secondaryPlayer: {}
-    }
+    }*/
 };
 
 const store = createStore(rootReducer, initialState);
@@ -41,15 +46,21 @@ const store = createStore(rootReducer, initialState);
 const routes = {
     path: '/',
     component: Shell,
-    childRoutes: []
+    childRoutes: [{
+        path: '/list',
+        component: List,
+    }/*, {
+        path: '/gather',
+        component: Gather,
+    }, {
+        path: '/report',
+        component: Report,
+    }*/]
 };
 
 ReactDOM.render(
     <Provider store={ store }>
-        <Router history={ appHistory }>
-            <Route path="/" component={ Shell }>
-            </Route>
-        </Router>
+        <Router history={ appHistory } routes={ routes } />
     </Provider>,
     document.getElementsByClassName('app')[0]
 );
