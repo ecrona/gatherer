@@ -1,5 +1,7 @@
 import { Incrementer } from 'utilities/incrementer'
 import { Http } from 'utilities/http'
+import { Resolver } from 'utilities/resolver'
+
 import { FullReport } from '../models/full-report.d'
 import { Match } from '../models/match.d'
 import { Event } from '../models/event.d'
@@ -36,10 +38,10 @@ export function receiveUnsorted(reports: Array<Event>) {
     };
 }
 
-export function fetchAll() {
+export function fetchAll(resolver: Resolver) {
     return (dispatch) => {
         dispatch(requestReports());
-        return Http.get('/slow.php')
+        return Http.get('/slow.php', resolver)
             .then(() => {
                 dispatch(receiveAll([{
                     id: 3,
@@ -53,10 +55,10 @@ export function fetchAll() {
     };
 }
 
-export function fetchMatches() {
+export function fetchMatches(resolver: Resolver) {
     return (dispatch) => {
         dispatch(requestReports());
-        return Http.get('/slow.php')
+        return Http.get('/slow.php', resolver)
             .then(() => {
                 dispatch(receiveMatches([{
                     id: 3,
@@ -70,10 +72,10 @@ export function fetchMatches() {
     };
 }
 
-export function fetchEvents() {
+export function fetchEvents(resolver: Resolver) {
     return (dispatch) => {
         dispatch(requestReports());
-        return Http.get('/slow.php')
+        return Http.get('/slow.php', resolver)
             .then(() => {
                 dispatch(receiveUnsorted([{
                     id: 3,
