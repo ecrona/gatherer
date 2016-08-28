@@ -1,4 +1,4 @@
-import { Incrementer } from 'incrementer'
+import { Incrementer } from 'utilities/incrementer'
 
 export const TOGGLE_GATHER_MODAL = Incrementer.increment();
 

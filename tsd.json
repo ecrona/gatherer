@@ -27,7 +27,19 @@
       "commit": "73e712534896baf8f17b30bbf4f45f05d77f48c5"
     },
     "redux/redux.d.ts": {
-      "commit": "73e712534896baf8f17b30bbf4f45f05d77f48c5"
+      "commit": "88c0d5f868bc184d70b6799d36b1946787beb48d"
+    },
+    "superagent/superagent.d.ts": {
+      "commit": "88c0d5f868bc184d70b6799d36b1946787beb48d"
+    },
+    "node/node.d.ts": {
+      "commit": "88c0d5f868bc184d70b6799d36b1946787beb48d"
+    },
+    "es6-promise/es6-promise.d.ts": {
+      "commit": "88c0d5f868bc184d70b6799d36b1946787beb48d"
+    },
+    "redux-thunk/redux-thunk.d.ts": {
+      "commit": "88c0d5f868bc184d70b6799d36b1946787beb48d"
     }
   }
 }
