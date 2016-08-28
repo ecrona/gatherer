@@ -1,5 +1,5 @@
 export enum ViewState {
-    Reports,
-    Something,
+    All,
+    Matches,
     Unsorted
 }

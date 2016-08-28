@@ -12,17 +12,19 @@ import thunkMiddleware from 'redux-thunk'
 
 import { viewState } from 'components/list/reducers/view-state'
 import { showGatherModal } from 'components/list/reducers/show-gather-modal'
-import { matches } from 'components/list/reducers/matches'
+import { all, matches, unsorted } from 'components/list/reducers/reports'
 import { fetching } from 'components/list/reducers/fetching'
 
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 const rootReducer = combineReducers({
     list: combineReducers({
-        viewState: viewState,
-        showGatherModal: showGatherModal,
-        matches: matches,
-        fetching: fetching
+        viewState,
+        showGatherModal,
+        fetching,
+        all,
+        matches,
+        unsorted
     })
 });
 
