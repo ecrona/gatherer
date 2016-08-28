@@ -12,6 +12,8 @@ import { AllTable } from './tables/all';
 import { MatchTable } from './tables/match';
 import { UnsortedTable } from './tables/unsorted';
 
+import { Resolver } from 'utilities/resolver';
+
 import { setViewState } from './actions/set-view-state'
 import { fetchAll, fetchMatches, fetchEvents } from './actions/fetch-reports'
 
@@ -37,11 +39,7 @@ interface Props {
 }
 
 class List extends React.Component<Props, any> {
-    constructor(props: Props) {
-        super(props);
-        console.log(props)
-    }
-
+    private resolver: Resolver;
     public tabs = [{
         title: 'All',
         viewState: ViewState.All,
@@ -53,16 +51,21 @@ class List extends React.Component<Props, any> {
         viewState: ViewState.Unsorted,
     }];
 
+    constructor(props: Props) {
+        super(props);
+    }
+
     private fetchReports(viewState: ViewState) {
         const { dispatch } = this.props;
+        this.resolver = new Resolver;
 
         switch(viewState) {
             case ViewState.All:
-                return dispatch(fetchAll());
+                return dispatch(fetchAll(this.resolver));
             case ViewState.Matches:
-                return dispatch(fetchMatches());
+                return dispatch(fetchMatches(this.resolver));
             case ViewState.Unsorted:
-                return dispatch(fetchEvents());
+                return dispatch(fetchEvents(this.resolver));
         }
     }
 
@@ -72,6 +75,7 @@ class List extends React.Component<Props, any> {
 
     public componentWillReceiveProps(props) {
         if (this.props.viewState !== props.viewState) {
+            this.resolver.resolve();
             this.fetchReports(props.viewState);
         }
 
@@ -84,8 +88,6 @@ class List extends React.Component<Props, any> {
     
     public render() {
         const { viewState, all, matches, unsorted, fetching } = this.props;
-
-        console.log(this.props)
 
         return (
             <div>
