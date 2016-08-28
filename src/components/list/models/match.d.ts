@@ -1,8 +1,6 @@
-export interface Match/* extends Identifiable*/ {
-    id: number;
-    player: string;
-    match: string;
-    date: string;
+import { Report } from './report.d'
+
+export interface Match extends Report {
     overall: number;
     actions: number;
 }

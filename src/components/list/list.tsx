@@ -5,13 +5,20 @@ import { bindActionCreators } from 'redux'
 import AppBar from 'material-ui/AppBar'
 import FlatButton from 'material-ui/FlatButton'
 import Paper from 'material-ui/Paper'
+import CircularProgress from 'material-ui/CircularProgress'
 
 import { ViewTabs } from './view-tabs';
-import { MatchTable } from './match-table';
+import { AllTable } from './tables/all';
+import { MatchTable } from './tables/match';
+import { UnsortedTable } from './tables/unsorted';
+
+import { setViewState } from './actions/set-view-state'
+import { fetchAll, fetchMatches, fetchEvents } from './actions/fetch-reports'
 
 import { ViewState } from './models/view-state'
-import { setViewState } from './actions/set-view-state'
-import { fetchReports } from './actions/fetch-reports'
+import { FullReport } from './models/full-report.d'
+import { Match } from './models/match.d'
+import { Event } from './models/event.d'
 
 const styles = {
     display: 'flex',
@@ -20,25 +27,55 @@ const styles = {
     width: '764px'
 };
 
-class List extends React.Component<any, any> {
-    constructor(props: any) {
+interface Props {
+    dispatch: (any) => void;
+    viewState: ViewState;
+    fetching: boolean;
+    all: Array<FullReport>;
+    matches: Array<Match>;
+    unsorted: Array<Event>;
+}
+
+class List extends React.Component<Props, any> {
+    constructor(props: Props) {
         super(props);
         console.log(props)
     }
 
     public tabs = [{
-        title: 'Reports',
-        viewState: ViewState.Reports,
+        title: 'All',
+        viewState: ViewState.All,
     }, {
-        title: 'Something',
-        viewState: ViewState.Something,
+        title: 'Matches',
+        viewState: ViewState.Matches,
     }, {
         title: 'Unsorted',
         viewState: ViewState.Unsorted,
     }];
 
+    private fetchReports(viewState: ViewState) {
+        const { dispatch } = this.props;
+
+        switch(viewState) {
+            case ViewState.All:
+                return dispatch(fetchAll());
+            case ViewState.Matches:
+                return dispatch(fetchMatches());
+            case ViewState.Unsorted:
+                return dispatch(fetchEvents());
+        }
+    }
+
     public componentDidMount() {
-        this.props.dispatch(fetchReports());
+        this.fetchReports(this.props.viewState);
+    }
+
+    public componentWillReceiveProps(props) {
+        if (this.props.viewState !== props.viewState) {
+            this.fetchReports(props.viewState);
+        }
+
+        this.props = props;
     }
 
     public setViewState(viewState: ViewState) {
@@ -46,7 +83,9 @@ class List extends React.Component<any, any> {
     }
     
     public render() {
-        const { viewState, matches, fetching } = this.props;
+        const { viewState, all, matches, unsorted, fetching } = this.props;
+
+        console.log(this.props)
 
         return (
             <div>
@@ -62,10 +101,18 @@ class List extends React.Component<any, any> {
                         tabs={ this.tabs }
                         viewState={ viewState }
                     />
-                    <MatchTable
-                        loading={ fetching }
-                        matches={ matches }
-                    />
+                    { fetching ?
+                        <div style={{ textAlign: 'center', padding: '10px' }}>
+                            <CircularProgress />
+                        </div>
+                    :
+                        viewState === ViewState.All ?
+                            <AllTable reports={ all } />
+                        : viewState === ViewState.Matches ?
+                            <MatchTable reports={ matches } />
+                        :
+                            <UnsortedTable reports={ unsorted } />
+                    }
                 </Paper>
             </div>
         );
@@ -75,7 +122,9 @@ class List extends React.Component<any, any> {
 const mapStateToProps = state => ({
   viewState: state.list.viewState,
   fetching: state.list.fetching,
-  matches: state.list.matches
+  all: state.list.all,
+  matches: state.list.matches,
+  unsorted: state.list.unsorted
 });
 
 export default connect(mapStateToProps)(List);
