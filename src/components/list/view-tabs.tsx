@@ -10,7 +10,7 @@ interface Props {
     setViewState: (viewState: ViewState) => void;
 }
 
-export class TabsComponent extends React.Component<Props, any> {
+export class ViewTabs extends React.Component<Props, any> {
     constructor(props: Props) {
         super(props);
     }

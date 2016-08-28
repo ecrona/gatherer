@@ -3,18 +3,15 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import AppBar from 'material-ui/AppBar'
-import Subheader from 'material-ui/Subheader'
 import FlatButton from 'material-ui/FlatButton'
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
-import Slider from 'material-ui/Slider'
 import Paper from 'material-ui/Paper'
-import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward';
 
-import { TabItem } from './models/tab-item.d';
-import { TabsComponent } from './tabs';
+import { ViewTabs } from './view-tabs';
+import { MatchTable } from './match-table';
 
-import { setViewState } from './actions/set-view-state'
 import { ViewState } from './models/view-state'
+import { setViewState } from './actions/set-view-state'
+import { fetchReports } from './actions/fetch-reports'
 
 const styles = {
     display: 'flex',
@@ -40,12 +37,16 @@ class List extends React.Component<any, any> {
         viewState: ViewState.Unsorted,
     }];
 
+    public componentDidMount() {
+        this.props.dispatch(fetchReports());
+    }
+
     public setViewState(viewState: ViewState) {
         this.props.dispatch(setViewState(viewState));
     }
     
     public render() {
-        const { viewState } = this.props;
+        const { viewState, matches, fetching } = this.props;
 
         return (
             <div>
@@ -56,35 +57,15 @@ class List extends React.Component<any, any> {
                     iconElementRight={ <FlatButton label="Gather" /> }
                 />
                 <Paper style={{ maxWidth: '1280px', margin: '0 auto' }}>
-                    <TabsComponent
+                    <ViewTabs
                         setViewState={ this.setViewState.bind(this) }
                         tabs={ this.tabs }
                         viewState={ viewState }
                     />
-                    <Table>
-                        <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
-                            <TableRow>
-                                <TableHeaderColumn style={{ width: '20%' }}>Player</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '30%' }}>Match</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '20%' }}>Date</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '15%' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <ArrowDownward style={{ color: 'default' }}/>Overall
-                                    </div>
-                                </TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '15%' }}>Actions</TableHeaderColumn>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody displayRowCheckbox={ false }>
-                            <TableRow selectable={ false }>
-                                <TableRowColumn style={{ width: '20%' }}>Giorgio Chiellini</TableRowColumn>
-                                <TableRowColumn style={{ width: '30%' }}>Juventus - Borussia Mönchenglabach</TableRowColumn>
-                                <TableRowColumn style={{ width: '20%' }}>2015-01-03</TableRowColumn>
-                                <TableRowColumn style={{ width: '15%' }}>8</TableRowColumn>
-                                <TableRowColumn style={{ width: '15%' }}>16</TableRowColumn>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
+                    <MatchTable
+                        loading={ fetching }
+                        matches={ matches }
+                    />
                 </Paper>
             </div>
         );
@@ -92,7 +73,9 @@ class List extends React.Component<any, any> {
 }
 
 const mapStateToProps = state => ({
-  viewState: state.list.viewState
+  viewState: state.list.viewState,
+  fetching: state.list.fetching,
+  matches: state.list.matches
 });
 
 export default connect(mapStateToProps)(List);

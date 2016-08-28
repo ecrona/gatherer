@@ -1,4 +1,4 @@
-import { Incrementer } from 'incrementer'
+import { Incrementer } from 'utilities/incrementer'
 import { ViewState } from '../models/view-state'
 
 export const SET_VIEW_STATE = Incrementer.increment();

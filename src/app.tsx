@@ -6,18 +6,23 @@ import List from 'components/list/list';
 
 import { Router, Route, useRouterHistory } from 'react-router'
 import { createHashHistory } from 'history'
+import { combineReducers, createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import { combineReducers, createStore } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 
 import { viewState } from 'components/list/reducers/view-state'
-import { showGatherModal } from 'components/list/reducers/show-gather-modal';
+import { showGatherModal } from 'components/list/reducers/show-gather-modal'
+import { matches } from 'components/list/reducers/matches'
+import { fetching } from 'components/list/reducers/fetching'
 
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 const rootReducer = combineReducers({
     list: combineReducers({
         viewState: viewState,
-        showGatherModal: showGatherModal
+        showGatherModal: showGatherModal,
+        matches: matches,
+        fetching: fetching
     })
 });
 
@@ -25,7 +30,9 @@ const initialState = {
     //viewState: 1,
     list: {
         showGatherModal: false,
-        viewState: 2
+        viewState: 2,
+        fetching: false,
+        matches: []
     }
     /*gather: {
         showSynchronizeModal: false,
@@ -41,7 +48,7 @@ const initialState = {
     }*/
 };
 
-const store = createStore(rootReducer, initialState);
+const store = createStore(rootReducer, initialState, applyMiddleware(thunkMiddleware));
 
 const routes = {
     path: '/',
