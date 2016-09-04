@@ -11,13 +11,17 @@ import { ViewTabs } from './view-tabs';
 import { AllTable } from './tables/all';
 import { MatchTable } from './tables/match';
 import { UnsortedTable } from './tables/unsorted';
+import { GatherModal } from './gather-modal';
 
 import { Resolver } from 'utilities/resolver';
 
 import { setViewState } from './actions/set-view-state'
+import { toggleGatherModal } from './actions/toggle-gather-modal'
+import { setHomeTeam, setAwayTeam, setPrimaryPlayer, setSecondaryPlayer } from './actions/set-gather-property'
 import { fetchAll, fetchMatches, fetchEvents } from './actions/fetch-reports'
 
 import { ViewState } from './models/view-state'
+import { GatherForm } from 'models/gather-form.d'
 import { FullReport } from './models/full-report.d'
 import { Match } from './models/match.d'
 import { Event } from './models/event.d'
@@ -32,6 +36,8 @@ const styles = {
 interface Props {
     dispatch: (any) => void;
     viewState: ViewState;
+    showGatherModal: boolean;
+    gatherModel: GatherForm;
     fetching: boolean;
     all: Array<FullReport>;
     matches: Array<Match>;
@@ -85,9 +91,32 @@ class List extends React.Component<Props, any> {
     public setViewState(viewState: ViewState) {
         this.props.dispatch(setViewState(viewState));
     }
+
+    public openGatherModal() {
+        this.props.dispatch(toggleGatherModal(true));
+    }
+
+    public closeGatherModal() {
+        this.props.dispatch(toggleGatherModal(false));
+    }
+
+    public gatherModelValid(): boolean {
+        return this.props.gatherModel.homeTeam.length > 0
+            && this.props.gatherModel.awayTeam.length > 0
+            && this.props.gatherModel.primaryPlayer.length > 0;
+    }
     
     public render() {
-        const { viewState, all, matches, unsorted, fetching } = this.props;
+        const {
+            dispatch,
+            viewState,
+            showGatherModal,
+            gatherModel,
+            all,
+            matches,
+            unsorted,
+            fetching
+        } = this.props;
 
         return (
             <div>
@@ -95,7 +124,12 @@ class List extends React.Component<Props, any> {
                     style={{ marginBottom: '24px' }}
                     title="Gatherer"
                     showMenuIconButton={ false }
-                    iconElementRight={ <FlatButton label="Gather" /> }
+                    iconElementRight={
+                        <FlatButton
+                            onClick={ this.openGatherModal.bind(this) }
+                            label="Gather"
+                        />
+                    }
                 />
                 <Paper style={{ maxWidth: '1280px', margin: '0 auto' }}>
                     <ViewTabs
@@ -116,17 +150,32 @@ class List extends React.Component<Props, any> {
                             <UnsortedTable reports={ unsorted } />
                     }
                 </Paper>
+                <GatherModal
+                    open={ showGatherModal }
+                    close={ this.closeGatherModal.bind(this) }
+                    setHomeTeam={ (homeTeam: string) => dispatch(setHomeTeam(homeTeam)) }
+                    setAwayTeam={ (awayTeam: string) => dispatch(setAwayTeam(awayTeam)) }
+                    setPrimaryPlayer={ (primaryPlayer: string) => dispatch(setPrimaryPlayer(primaryPlayer)) }
+                    setSecondaryPlayer={ (secondaryPlayer: string) => dispatch(setSecondaryPlayer(secondaryPlayer)) }
+                    homeTeam={ gatherModel.homeTeam }
+                    awayTeam={ gatherModel.awayTeam }
+                    primaryPlayer={ gatherModel.primaryPlayer }
+                    secondaryPlayer={ gatherModel.secondaryPlayer }
+                    valid={ this.gatherModelValid() }
+                />
             </div>
         );
     }
 }
 
 const mapStateToProps = state => ({
-  viewState: state.list.viewState,
-  fetching: state.list.fetching,
-  all: state.list.all,
-  matches: state.list.matches,
-  unsorted: state.list.unsorted
+    viewState: state.list.viewState,
+    showGatherModal: state.list.showGatherModal,
+    gatherModel: state.list.gatherModel,
+    fetching: state.list.fetching,
+    all: state.list.all,
+    matches: state.list.matches,
+    unsorted: state.list.unsorted
 });
 
 export default connect(mapStateToProps)(List);
