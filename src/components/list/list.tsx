@@ -19,6 +19,7 @@ import { setViewState } from './actions/set-view-state'
 import { toggleGatherModal } from './actions/toggle-gather-modal'
 import { setHomeTeam, setAwayTeam, setPrimaryPlayer, setSecondaryPlayer } from './actions/set-gather-property'
 import { fetchAll, fetchMatches, fetchEvents } from './actions/fetch-reports'
+import { push } from 'react-router-redux'
 
 import { ViewState } from './models/view-state'
 import { GatherForm } from 'models/gather-form.d'
@@ -97,7 +98,8 @@ class List extends React.Component<Props, any> {
     }
 
     public closeGatherModal() {
-        this.props.dispatch(toggleGatherModal(false));
+        this.props.dispatch(push('/test'));
+        //this.props.dispatch(toggleGatherModal(false));
     }
 
     public gatherModelValid(): boolean {

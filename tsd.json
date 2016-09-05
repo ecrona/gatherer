@@ -9,16 +9,16 @@
       "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
     },
     "react-router/history.d.ts": {
-      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+      "commit": "084e55916674ff7128722bf72150aa55acea08d9"
     },
     "react/react.d.ts": {
-      "commit": "73e712534896baf8f17b30bbf4f45f05d77f48c5"
+      "commit": "084e55916674ff7128722bf72150aa55acea08d9"
     },
     "react/react-dom.d.ts": {
       "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
     },
     "react-router/react-router.d.ts": {
-      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+      "commit": "084e55916674ff7128722bf72150aa55acea08d9"
     },
     "material-ui/material-ui.d.ts": {
       "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
@@ -27,7 +27,7 @@
       "commit": "73e712534896baf8f17b30bbf4f45f05d77f48c5"
     },
     "redux/redux.d.ts": {
-      "commit": "88c0d5f868bc184d70b6799d36b1946787beb48d"
+      "commit": "084e55916674ff7128722bf72150aa55acea08d9"
     },
     "superagent/superagent.d.ts": {
       "commit": "88c0d5f868bc184d70b6799d36b1946787beb48d"
@@ -45,6 +45,9 @@
       "commit": "084e55916674ff7128722bf72150aa55acea08d9"
     },
     "object-assign/object-assign.d.ts": {
+      "commit": "084e55916674ff7128722bf72150aa55acea08d9"
+    },
+    "react-router-redux/react-router-redux.d.ts": {
       "commit": "084e55916674ff7128722bf72150aa55acea08d9"
     }
   }

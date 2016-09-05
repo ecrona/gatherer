@@ -8,18 +8,17 @@ import { Router, Route, useRouterHistory } from 'react-router'
 import { createHashHistory } from 'history'
 import { combineReducers, createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux'
 import thunkMiddleware from 'redux-thunk'
 
 import { viewState } from 'components/list/reducers/view-state'
 import { showGatherModal } from 'components/list/reducers/show-gather-modal'
 import { all, matches, unsorted } from 'components/list/reducers/reports'
 import { fetching } from 'components/list/reducers/fetching'
-import { gatherModel } from 'components/list/reducers/gather-model';
+import { gatherModel } from 'components/list/reducers/gather-model'
 
 import injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
-
-const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 const rootReducer = combineReducers({
     list: combineReducers({
@@ -30,7 +29,8 @@ const rootReducer = combineReducers({
         all,
         matches,
         unsorted
-    })
+    }),
+    routing: routerReducer
 });
 
 const initialState = {
@@ -63,13 +63,18 @@ const initialState = {
     }*/
 };
 
-const store = createStore(rootReducer, initialState, applyMiddleware(thunkMiddleware));
+const history = useRouterHistory(createHashHistory)({ queryKey: false });
+const historyMiddleware = routerMiddleware(history);
+const store = createStore(rootReducer, initialState, applyMiddleware(thunkMiddleware, historyMiddleware));
 
 const routes = {
     path: '/',
     component: Shell,
     childRoutes: [{
         path: '/list',
+        component: List,
+    },{
+        path: '/test',
         component: List,
     }/*, {
         path: '/gather',
@@ -82,7 +87,7 @@ const routes = {
 
 ReactDOM.render(
     <Provider store={ store }>
-        <Router history={ appHistory } routes={ routes } />
+        <Router history={ history } routes={ routes } />
     </Provider>,
     document.getElementsByClassName('app')[0]
 );
