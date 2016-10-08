@@ -1,31 +1,24 @@
 var path = require('path');
 var webpack = require('webpack');
+var merge = require('webpack-merge');
+var common = require('./webpack.common.config.js');
+var outputPath = path.resolve(__dirname, 'public/js');
 
 var config = {
-    entry: ['./src/app.tsx'],
+    entry: {
+        app: './src/app.tsx'
+    },
     output: {
-        path: path.resolve(__dirname, 'public/js'),
+        path: outputPath,
         filename: 'bundle.js'
     },
-    devtool: "source-map",
-    resolve: {
-        root: path.resolve('./src'),
-        extensions: ['', '.ts', '.tsx', '.js']
-    },
-    module: {
-        loaders: [{
-            test: /\.tsx?$/,
-            loader: 'ts-loader',
-            exclude: /node_modules/
-        }],
-        noParse: /validate\.js/
-    },
-    node: {
-        console: true,
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty'
-    }
+    devtool: 'source-map',
+    plugins: [
+        new webpack.DllReferencePlugin({
+            context: process.cwd(),
+            manifest: require(path.join(outputPath, 'vendor.json'))
+        })
+    ]
 };
 
-module.exports = config;
+module.exports = merge({}, common, config);
