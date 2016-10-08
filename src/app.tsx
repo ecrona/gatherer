@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom'
 
 import { Shell } from 'components/shell'
 import List from 'components/list/list'
+import Gather from 'components/gather/gather'
 
 import { Router, Route, useRouterHistory } from 'react-router'
 import { createHashHistory } from 'history'
@@ -73,13 +74,10 @@ const routes = {
     childRoutes: [{
         path: '/list',
         component: List,
-    },{
-        path: '/test',
-        component: List,
-    }/*, {
-        path: '/gather',
-        component: Gather,
     }, {
+        path: '/gather/:id',
+        component: Gather,
+    }/*, {
         path: '/report',
         component: Report,
     }*/]
