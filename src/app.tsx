@@ -18,6 +18,8 @@ import { all, matches, unsorted } from 'components/list/reducers/reports'
 import { fetching } from 'components/list/reducers/fetching'
 import { gatherModel } from 'components/list/reducers/gather-model'
 
+import { popups } from 'components/gather/reducers/popups'
+
 import injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
@@ -31,7 +33,10 @@ const rootReducer = combineReducers({
         matches,
         unsorted
     }),
-    routing: routerReducer
+    routing: routerReducer,
+    gather: combineReducers({
+        popups: popups
+    })
 });
 
 const initialState = {
@@ -49,15 +54,29 @@ const initialState = {
         all: [],
         matches: [],
         unsorted: []
-    }
-    /*gather: {
+    },
+    gather: {
         showSynchronizeModal: false,
         status: 'play|pause',
         time: '33:01',
+        popups: {
+            primaryPlayerOverall: false,
+            secondaryPlayerOverall: false,
+            primaryPlayerAction: false,
+            secondaryPlayerAction: false
+        },
         primaryPlayer: {},
-        secondaryPlayer: {}
+        secondaryPlayer: {
+            name: 'Andrea Barzagli',
+            overall: 8,
+            actions: [{
+                featured: true,
+                description: 'Tackles',
+                amount: 9
+            }]
+        }
     },
-    report: {
+    /*report: {
         viewState: 'statistics|incremental',
         primaryPlayer: {},
         secondaryPlayer: {}
