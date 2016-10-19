@@ -9,6 +9,7 @@ import {
 } from '../actions/popups'
 
 import {
+    REQUEST_GATHER,
     REQUEST_PLAYER_CHANGE,
     RECEIVE_PRIMARY_PLAYER_OVERALL,
     RECEIVE_PRIMARY_PLAYER_ACTION,
@@ -42,6 +43,8 @@ export const popups = function(state = initialState, action) {
         case RECEIVE_SECONDARY_PLAYER_ACTION:
         case CLOSE:
             return objectAssign({}, initialState, { loading: state.loading });
+        case REQUEST_GATHER:
+            return objectAssign({}, initialState);
         default:
             return state;
     }

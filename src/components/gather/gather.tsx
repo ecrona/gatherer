@@ -22,6 +22,9 @@ const styles = {
 interface Props {
     dispatch: (any) => void;
     fetching: boolean;
+    params: {
+        id: string
+    };
 }
 
 class Gather extends React.Component<Props, any> {
@@ -31,9 +34,25 @@ class Gather extends React.Component<Props, any> {
         super(props);
     }
 
-    public componentDidMount() {
+    private fetchGather(id: number) {
         this.resolver = new Resolver;
-        this.props.dispatch(fetchGather(3, this.resolver));
+        this.props.dispatch(fetchGather(id, this.resolver));
+    }
+
+    public componentDidMount() {
+        this.fetchGather(Number(this.props.params.id));
+    }
+
+    public componentWillReceiveProps(props: Props) {
+        if (props.params.id !== this.props.params.id) {
+            this.fetchGather(Number(props.params.id));
+        }
+
+        this.props = props;
+    }
+
+    public componentWillUnmount() {
+        this.resolver.resolve();
     }
     
     public render() {

@@ -52,6 +52,12 @@ class PlayerPanel extends React.Component<Props, any> {
         super(props);
     }
 
+    public componentWillUnmount() {
+        if (this.resolver) {
+            this.resolver.resolve();
+        }
+    }
+
     public newResolver() {
         this.resolver = new Resolver;
         return this.resolver;
@@ -78,42 +84,34 @@ class PlayerPanel extends React.Component<Props, any> {
         console.log(this.props)
 
         return (
-            <div>
-                { false ?
-                    <div style={{ textAlign: 'center', padding: '10px' }}>
-                        <CircularProgress />
-                    </div>
-                :
-                    <div style={{ display: 'flex', padding: '10px 5px 10px 15px' }}>
-                        <PlayerCard
-                            player={ secondaryPlayer }
-                            showOverallPopup={ secondaryPlayerOverallPopup }
-                            openOverallPopup={ () => dispatch(openSecondaryPlayerOverall()) }
-                            showActionPopup={ secondaryPlayerActionPopup }
-                            openActionPopup={ () => dispatch(openSecondaryPlayerAction()) }
-                            increaseOverall={ () => dispatch(increaseSecondaryPlayerOverall(this.newResolver())) }
-                            decreaseOverall={ () => dispatch(decreaseSecondaryPlayerOverall(this.newResolver())) }
-                            increaseAction={ (action: Action) => dispatch(increaseSecondaryPlayerAction(action, this.newResolver())) }
-                            decreaseAction={ (action: Action) => dispatch(decreaseSecondaryPlayerAction(action, this.newResolver())) }
-                            popupLoading={ popupLoading }
-                            closePopup={ () => dispatch(close()) }
-                        />
-                        <div style={{ padding: '5px' }} />
-                        <PlayerCard
-                            player={ primaryPlayer }
-                            showOverallPopup={ primaryPlayerOverallPopup }
-                            openOverallPopup={ () => dispatch(openPrimaryPlayerOverall()) }
-                            showActionPopup={ primaryPlayerActionPopup }
-                            openActionPopup={ () => dispatch(openPrimaryPlayerAction()) }
-                            increaseOverall={ () => dispatch(increasePrimaryPlayerOverall(this.newResolver())) }
-                            decreaseOverall={ () => dispatch(decreasePrimaryPlayerOverall(this.newResolver())) }
-                            increaseAction={ (action: Action) => dispatch(increasePrimaryPlayerAction(action, this.newResolver())) }
-                            decreaseAction={ (action: Action) => dispatch(decreasePrimaryPlayerAction(action, this.newResolver())) }
-                            popupLoading={ popupLoading }
-                            closePopup={ this.closePopup.bind(this) }
-                        />
-                    </div>
-                }
+            <div style={{ display: 'flex', padding: '10px 5px 10px 15px' }}>
+                <PlayerCard
+                    player={ secondaryPlayer }
+                    showOverallPopup={ secondaryPlayerOverallPopup }
+                    openOverallPopup={ () => dispatch(openSecondaryPlayerOverall()) }
+                    showActionPopup={ secondaryPlayerActionPopup }
+                    openActionPopup={ () => dispatch(openSecondaryPlayerAction()) }
+                    increaseOverall={ () => dispatch(increaseSecondaryPlayerOverall(this.newResolver())) }
+                    decreaseOverall={ () => dispatch(decreaseSecondaryPlayerOverall(this.newResolver())) }
+                    increaseAction={ (action: Action) => dispatch(increaseSecondaryPlayerAction(action, this.newResolver())) }
+                    decreaseAction={ (action: Action) => dispatch(decreaseSecondaryPlayerAction(action, this.newResolver())) }
+                    popupLoading={ popupLoading }
+                    closePopup={ () => dispatch(close()) }
+                />
+                <div style={{ padding: '5px' }} />
+                <PlayerCard
+                    player={ primaryPlayer }
+                    showOverallPopup={ primaryPlayerOverallPopup }
+                    openOverallPopup={ () => dispatch(openPrimaryPlayerOverall()) }
+                    showActionPopup={ primaryPlayerActionPopup }
+                    openActionPopup={ () => dispatch(openPrimaryPlayerAction()) }
+                    increaseOverall={ () => dispatch(increasePrimaryPlayerOverall(this.newResolver())) }
+                    decreaseOverall={ () => dispatch(decreasePrimaryPlayerOverall(this.newResolver())) }
+                    increaseAction={ (action: Action) => dispatch(increasePrimaryPlayerAction(action, this.newResolver())) }
+                    decreaseAction={ (action: Action) => dispatch(decreasePrimaryPlayerAction(action, this.newResolver())) }
+                    popupLoading={ popupLoading }
+                    closePopup={ this.closePopup.bind(this) }
+                />
             </div>
         );
     }
