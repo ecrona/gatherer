@@ -5,30 +5,39 @@ import Paper from 'material-ui/Paper'
 import { List, ListItem } from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
 import Divider from 'material-ui/Divider'
-import Popover from 'material-ui/Popover'
+import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
+import CircularProgress from 'material-ui/CircularProgress'
 
 import Avatar from 'material-ui/Avatar'
 import ActionGrade from 'material-ui/svg-icons/action/grade'
 import { transparent } from 'material-ui/styles/colors'
 
+import { Popup } from './popup'
+
 import { Player } from 'models/player'
 import { Action } from 'models/action'
-
-
 
 interface Props {
     player: Player;
     showOverallPopup: boolean;
     openOverallPopup: () => void;
+    increaseOverall: () => void;
+    decreaseOverall: () => void;
+    showActionPopup: boolean;
+    openActionPopup: () => void;
+    increaseAction: (action: Action) => void;
+    decreaseAction: (action: Action) => void;
+    popupLoading: boolean;
     closePopup: () => void;
 }
 
 export class PlayerCard extends React.Component<Props, any> {
     public context: { muiTheme: MuiTheme };
-    public lastElement;
+    public selectedElement;
+    public selectedAction;
 
     public static contextTypes: React.ValidationMap<any> = {
         muiTheme: React.PropTypes.object
@@ -54,9 +63,30 @@ export class PlayerCard extends React.Component<Props, any> {
         return <span />;
     }
     
-    public trigger(e, fn) {
-        this.lastElement = e.currentTarget;
+    public trigger(e, fn: () => void) {
+        this.selectedElement = e.currentTarget;
         fn();
+    }
+
+    public clickAction(e, action: Action, fn: () => void) {
+        this.selectedAction = action;
+        this.trigger(e, fn);
+    }
+
+    public increase() {
+        if (this.props.showOverallPopup) {
+            this.props.increaseOverall();
+        } else {
+            this.props.increaseAction(this.selectedAction);
+        }
+    }
+
+    public decrease() {
+        if (this.props.showOverallPopup) {
+            this.props.decreaseOverall();
+        } else {
+            this.props.decreaseAction(this.selectedAction);
+        }
     }
     
     public render() {
@@ -64,6 +94,9 @@ export class PlayerCard extends React.Component<Props, any> {
             player,
             showOverallPopup,
             openOverallPopup,
+            showActionPopup,
+            openActionPopup,
+            popupLoading,
             closePopup
         } = this.props;
 
@@ -81,23 +114,19 @@ export class PlayerCard extends React.Component<Props, any> {
                             style={{ display: 'inline-block', float: 'right', marginRight: '16px' }}
                         />
                     </div>
-                    <Popover
-                        open={ showOverallPopup }
-                        anchorEl={ this.lastElement }
-                        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                        targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                        onRequestClose={ closePopup }
-                    >
-                        <Menu>
-                            <MenuItem primaryText="Increase" />
-                            <MenuItem primaryText="Decrease" />
-                        </Menu>
-                    </Popover>
+                    <Popup
+                        show={ showOverallPopup || showActionPopup }
+                        increase={ this.increase.bind(this) }
+                        decrease={ this.decrease.bind(this) }
+                        loading={ popupLoading }
+                        close={ closePopup }
+                        selectedElement={ this.selectedElement }
+                    />
                     <Divider />
                     { player.actions.map((action, index) => (
                         <ListItem
                             key={ index }
-                            onClick={ (e) => this.trigger(e, openOverallPopup) }
+                            onClick={ (e) => this.clickAction(e, action, openActionPopup) }
                             primaryText={ action.description }
                             leftAvatar={ this.getLeftAvatar(action) }
                             rightAvatar={

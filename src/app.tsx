@@ -19,6 +19,7 @@ import { fetching } from 'components/list/reducers/fetching'
 import { gatherModel } from 'components/list/reducers/gather-model'
 
 import { popups } from 'components/gather/reducers/popups'
+import { gather } from 'components/gather/reducers/gather'
 
 import injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
@@ -35,7 +36,8 @@ const rootReducer = combineReducers({
     }),
     routing: routerReducer,
     gather: combineReducers({
-        popups: popups
+        popups: popups,
+        data: gather
     })
 });
 
@@ -56,24 +58,29 @@ const initialState = {
         unsorted: []
     },
     gather: {
+        time: '33:01',
         showSynchronizeModal: false,
         status: 'play|pause',
-        time: '33:01',
         popups: {
             primaryPlayerOverall: false,
             secondaryPlayerOverall: false,
             primaryPlayerAction: false,
-            secondaryPlayerAction: false
+            secondaryPlayerAction: false,
+            loading: false
         },
-        primaryPlayer: {},
-        secondaryPlayer: {
-            name: 'Andrea Barzagli',
-            overall: 8,
-            actions: [{
-                featured: true,
-                description: 'Tackles',
-                amount: 9
-            }]
+        data: {
+            fetching: true,
+            id: '1',
+            primaryPlayer: {},
+            secondaryPlayer: {
+                name: 'Andrea Barzagli',
+                overall: 8,
+                actions: [{
+                    featured: true,
+                    description: 'Tackles',
+                    amount: 9
+                }]
+            }
         }
     },
     /*report: {
