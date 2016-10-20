@@ -20,6 +20,7 @@ import { gatherModel } from 'components/list/reducers/gather-model'
 
 import { popups } from 'components/gather/reducers/popups'
 import { gather } from 'components/gather/reducers/gather'
+import { time, status, half } from 'components/gather/reducers/status'
 
 import injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
@@ -36,6 +37,9 @@ const rootReducer = combineReducers({
     }),
     routing: routerReducer,
     gather: combineReducers({
+        time,
+        status,
+        half,
         popups: popups,
         data: gather
     })
@@ -58,9 +62,10 @@ const initialState = {
         unsorted: []
     },
     gather: {
-        time: '33:01',
+        time: '00:00',
         showSynchronizeModal: false,
-        status: 'play|pause',
+        status: 0,
+        half: 0,
         popups: {
             primaryPlayerOverall: false,
             secondaryPlayerOverall: false,
