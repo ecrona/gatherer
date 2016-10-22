@@ -13,6 +13,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import AvPause from 'material-ui/svg-icons/av/pause'
 import AvPlayArrow from 'material-ui/svg-icons/av/play-arrow'
 import Sync from 'material-ui/svg-icons/notification/sync'
+import Star from 'material-ui/svg-icons/toggle/star'
+import StarHalf from 'material-ui/svg-icons/toggle/star-half'
 
 import { setTime, setStatus, setHalf } from './actions/status'
 
@@ -66,6 +68,14 @@ class Toolbar extends React.Component<Props, any> {
         }
     }
 
+    public getHalfIcon() {
+        if (this.props.half === Half.First) {
+            return <StarHalf style={{ margin: '6px' }} />
+        } else if (this.props.half === Half.Second) {
+            return <Star style={{ margin: '6px' }} />
+        }
+    }
+
     public toggleStatus() {
         if (this.props.status === Status.Paused) {
             this.props.dispatch(setStatus(Status.Playing));
@@ -78,11 +88,24 @@ class Toolbar extends React.Component<Props, any> {
         }
     }
 
+    public toggleHalf() {
+        const half = this.props.half === Half.First ? Half.Second : Half.First;
+        cancelAnimationFrame(this.interval);
+        this.props.dispatch(setHalf(half));
+        
+        if (half === Half.First) {
+            this.rest = 0;
+        } else if (half === Half.Second) {
+            this.rest = 2700000; // 45 minutes
+        }
+    }
+
     public render() {
         const {
             fetching,
             time,
-            status
+            status,
+            half
         } = this.props;
 
         return (
@@ -94,9 +117,19 @@ class Toolbar extends React.Component<Props, any> {
                         primary={ true }
                         onClick={ this.toggleStatus.bind(this) }
                     />
+                    <RaisedButton
+                        style={{ marginLeft: 0, marginRight: 0 }}
+                        disabled={ fetching }
+                        icon={ this.getHalfIcon() }
+                        primary={ true }
+                        onClick={ this.toggleHalf.bind(this) }
+                    />
                 </ToolbarGroup>
-                <ToolbarGroup>
-                    <ToolbarTitle text={ time } />
+                <ToolbarGroup style={{ marginRight: '88px' }}>
+                    <ToolbarTitle
+                        style={{ padding: 0 }}
+                        text={ time }
+                    />
                 </ToolbarGroup>
                 <ToolbarGroup lastChild={ true }>
                     <RaisedButton
