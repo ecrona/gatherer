@@ -8,9 +8,12 @@ import {
     SET_HALF
 } from '../actions/status'
 
+import { SYNCHRONIZE } from '../actions/synchronize-modal'
+
 export const time = function(state = '00:00', action) {
     switch (action.type) {
         case SET_TIME:
+        case SYNCHRONIZE:
             return action.time;
         case SET_HALF:
             return action.half === Half.First ? '00:00' : '45:00'
@@ -33,6 +36,7 @@ export const status = function(state = Status.Paused, action) {
 export const half = function(state = Half.First, action) {
     switch (action.type) {
         case SET_HALF:
+        case SYNCHRONIZE:
             return action.half;
     }
 

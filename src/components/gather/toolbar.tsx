@@ -9,6 +9,8 @@ import {
     ToolbarTitle
 } from 'material-ui/Toolbar'
 
+import Dialog from 'material-ui/Dialog'
+import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import AvPause from 'material-ui/svg-icons/av/pause'
 import AvPlayArrow from 'material-ui/svg-icons/av/play-arrow'
@@ -16,10 +18,14 @@ import Sync from 'material-ui/svg-icons/notification/sync'
 import Star from 'material-ui/svg-icons/toggle/star'
 import StarHalf from 'material-ui/svg-icons/toggle/star-half'
 
+import SynchronizeModal from './synchronize-modal'
+
 import { setTime, setStatus, setHalf } from './actions/status'
+import { toggleActive } from './actions/synchronize-modal'
 
 import { Status } from './models/status'
 import { Half } from './models/half'
+
 
 interface Props {
     dispatch: (any) => void;
@@ -27,6 +33,7 @@ interface Props {
     time: string;
     status: Status;
     half: Half;
+    showSynchronizeModal: boolean;
 }
 
 class Toolbar extends React.Component<Props, any> {
@@ -102,10 +109,9 @@ class Toolbar extends React.Component<Props, any> {
 
     public render() {
         const {
+            dispatch,
             fetching,
-            time,
-            status,
-            half
+            time
         } = this.props;
 
         return (
@@ -135,8 +141,10 @@ class Toolbar extends React.Component<Props, any> {
                     <RaisedButton
                         disabled={ fetching }
                         icon={ <Sync style={{ margin: '6px' }} /> }
-                        secondary={ true} 
+                        secondary={ true }
+                        onClick={ () => dispatch(toggleActive(true)) }
                     />
+                    <SynchronizeModal />
                 </ToolbarGroup>
             </MuiToolbar>
         );
