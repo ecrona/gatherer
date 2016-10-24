@@ -1,37 +1,36 @@
 import * as React from 'react'
 
-import { MuiTheme } from 'material-ui/styles';
+import { MuiTheme } from 'material-ui/styles'
 import Paper from 'material-ui/Paper'
 import { List, ListItem } from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
 import Divider from 'material-ui/Divider'
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
-import Menu from 'material-ui/Menu'
-import MenuItem from 'material-ui/MenuItem'
-import RaisedButton from 'material-ui/RaisedButton'
-import CircularProgress from 'material-ui/CircularProgress'
 
+import RaisedButton from 'material-ui/RaisedButton'
 import Avatar from 'material-ui/Avatar'
 import ActionGrade from 'material-ui/svg-icons/action/grade'
 import { transparent } from 'material-ui/styles/colors'
 
 import { Popup } from './popup'
+import { OverallButton } from './overall-button'
 
 import { Player } from 'models/player'
 import { Action } from 'models/action'
 
 interface Props {
+    viewOnly: boolean;
     player: Player;
-    showOverallPopup: boolean;
-    openOverallPopup: () => void;
-    increaseOverall: () => void;
-    decreaseOverall: () => void;
-    showActionPopup: boolean;
-    openActionPopup: () => void;
-    increaseAction: (action: Action) => void;
-    decreaseAction: (action: Action) => void;
-    popupLoading: boolean;
-    closePopup: () => void;
+    showOverallPopup?: boolean;
+    showActionPopup?: boolean;
+    popupLoading?: boolean;
+    openOverallPopup?: () => void;
+    increaseOverall?: () => void;
+    decreaseOverall?: () => void;
+    openActionPopup?: () => void;
+    increaseAction?: (action: Action) => void;
+    decreaseAction?: (action: Action) => void;
+    closePopup?: () => void;
 }
 
 export class PlayerCard extends React.Component<Props, any> {
@@ -69,8 +68,10 @@ export class PlayerCard extends React.Component<Props, any> {
     }
 
     public clickAction(e, action: Action, fn: () => void) {
-        this.selectedAction = action;
-        this.trigger(e, fn);
+        if (fn) {
+            this.selectedAction = action;
+            this.trigger(e, fn);
+        }
     }
 
     public increase() {
@@ -97,7 +98,8 @@ export class PlayerCard extends React.Component<Props, any> {
             showActionPopup,
             openActionPopup,
             popupLoading,
-            closePopup
+            closePopup,
+            viewOnly
         } = this.props;
 
         return (
@@ -107,11 +109,12 @@ export class PlayerCard extends React.Component<Props, any> {
                         <Subheader style={{ display: 'inline-block', width: 'initial' }}>
                             { player.name }
                         </Subheader>
-                        <RaisedButton
-                            onClick={ (e) => this.trigger(e, openOverallPopup) }
-                            label={ player.overall }
+                                                
+                        <OverallButton
+                            viewOnly={ viewOnly }
+                            overall={ player.overall }
                             labelColor={ this.getPrimaryColor() }
-                            style={{ display: 'inline-block', float: 'right', marginRight: '16px' }}
+                            click={ (e) => this.trigger(e, openOverallPopup) }
                         />
                     </div>
                     <Popup
@@ -127,6 +130,7 @@ export class PlayerCard extends React.Component<Props, any> {
                         <ListItem
                             key={ index }
                             onClick={ (e) => this.clickAction(e, action, openActionPopup) }
+                            disabled={ viewOnly }
                             primaryText={ action.description }
                             leftAvatar={ this.getLeftAvatar(action) }
                             rightAvatar={

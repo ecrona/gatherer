@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom'
 import { Shell } from 'components/shell'
 import List from 'components/list/list'
 import Gather from 'components/gather/gather'
+import Report from 'components/report/report'
 
 import { Router, Route, useRouterHistory } from 'react-router'
 import { createHashHistory } from 'history'
@@ -22,6 +23,9 @@ import { popups } from 'components/gather/reducers/popups'
 import { gather } from 'components/gather/reducers/gather'
 import { time, status, half } from 'components/gather/reducers/status'
 import { active, half as synchronizeModalHalf, minutes, seconds } from 'components/gather/reducers/synchronize-modal'
+
+import { viewState as reportViewState } from 'components/report/reducers/view-state'
+import { gather as reportGather } from 'components/report/reducers/gather'
 
 import injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
@@ -49,6 +53,10 @@ const rootReducer = combineReducers({
         }),
         popups: popups,
         data: gather
+    }),
+    report: combineReducers({
+        viewState: reportViewState,
+        gather: reportGather
     })
 });
 
@@ -100,11 +108,24 @@ const initialState = {
             }
         }
     },
-    /*report: {
-        viewState: 'statistics|incremental',
-        primaryPlayer: {},
-        secondaryPlayer: {}
-    }*/
+    report: {
+        viewState: 0,
+        gather: {
+            fetching: true,
+            id: '1',
+            primaryPlayer: {},
+            secondaryPlayer: {
+                name: 'Andrea Barzagli',
+                overall: 8,
+                actions: [{
+                    featured: true,
+                    description: 'Tackles',
+                    amount: 9
+                }]
+            },        
+            incremental: []
+        }
+    }
 };
 
 const history = useRouterHistory(createHashHistory)({ queryKey: false });
@@ -120,10 +141,10 @@ const routes = {
     }, {
         path: '/gather/:id',
         component: Gather,
-    }/*, {
-        path: '/report',
+    }, {
+        path: '/report/:id',
         component: Report,
-    }*/]
+    }]
 };
 
 ReactDOM.render(

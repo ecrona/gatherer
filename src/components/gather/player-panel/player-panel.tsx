@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Resolver } from 'utilities/resolver'
 
 import CircularProgress from 'material-ui/CircularProgress'
-import { PlayerCard } from './player-card'
+import { PlayerCard } from '../../player-card/player-card'
 
 import { Player } from 'models/player'
 import { Action } from 'models/action'
