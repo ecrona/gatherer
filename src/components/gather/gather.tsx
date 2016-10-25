@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Resolver } from 'utilities/resolver'
+import { push } from 'react-router-redux'
 
 import AppBar from 'material-ui/AppBar'
 import FlatButton from 'material-ui/FlatButton'
@@ -55,6 +56,10 @@ class Gather extends React.Component<Props, any> {
         this.resolver.resolve();
     }
     
+    public gotoReport() {
+        this.props.dispatch(push('/report/' + this.props.params.id));
+    }
+
     public render() {
         const { fetching } = this.props;
 
@@ -66,7 +71,7 @@ class Gather extends React.Component<Props, any> {
                     showMenuIconButton={ false }
                     iconElementRight={
                         <FlatButton
-                            onClick={ () => true }
+                            onClick={ this.gotoReport.bind(this) }
                             label="Done"
                         />
                     }
