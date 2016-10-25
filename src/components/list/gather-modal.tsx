@@ -7,6 +7,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 
 interface Props {
     open: boolean;
+    submit: () => void;
     close: () => void;
     setHomeTeam: (homeTeam: string) => void;
     setAwayTeam: (awayTeam: string) => void;
@@ -35,7 +36,7 @@ export default class GatherModal extends React.Component<Props, any> {
                 label="Submit"
                 primary={ true }
                 keyboardFocused={ true }
-                onClick={ this.props.close }
+                onClick={ this.props.submit }
                 disabled={ !this.props.valid }
             />,
         ];
