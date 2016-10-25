@@ -33,8 +33,6 @@ class PlayerPanel extends React.Component<Props, any> {
             secondaryPlayer
         } = this.props;
 
-        console.log(this.props)
-
         return (
             <div style={{ display: 'flex', padding: '10px 5px 10px 15px' }}>
                 <PlayerCard

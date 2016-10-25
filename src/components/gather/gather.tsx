@@ -72,7 +72,7 @@ class Gather extends React.Component<Props, any> {
                     }
                 />
                 <Paper style={{ maxWidth: '1280px', margin: '0 auto' }}>
-                    <Toolbar frozen={ fetching } />
+                    <Toolbar />
                     { fetching ?
                         <div style={{ textAlign: 'center', padding: '10px' }}>
                             <CircularProgress />

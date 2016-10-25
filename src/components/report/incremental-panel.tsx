@@ -18,7 +18,7 @@ const styles = {
 
 interface Props {
     dispatch: (any) => void;
-    incremental: Array<Array<String>>;
+    incremental: Array<Array<string>>;
 }
 
 class IncrementalPanel extends React.Component<Props, any> {

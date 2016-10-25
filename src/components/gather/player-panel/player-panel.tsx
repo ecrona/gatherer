@@ -86,6 +86,7 @@ class PlayerPanel extends React.Component<Props, any> {
         return (
             <div style={{ display: 'flex', padding: '10px 5px 10px 15px' }}>
                 <PlayerCard
+                    viewOnly={ false }
                     player={ secondaryPlayer }
                     showOverallPopup={ secondaryPlayerOverallPopup }
                     openOverallPopup={ () => dispatch(openSecondaryPlayerOverall()) }
@@ -100,6 +101,7 @@ class PlayerPanel extends React.Component<Props, any> {
                 />
                 <div style={{ padding: '5px' }} />
                 <PlayerCard
+                    viewOnly={ false }
                     player={ primaryPlayer }
                     showOverallPopup={ primaryPlayerOverallPopup }
                     openOverallPopup={ () => dispatch(openPrimaryPlayerOverall()) }

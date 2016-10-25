@@ -16,7 +16,7 @@ const initialState = {
 export const gather = function(state = initialState, action) {
     switch (action.type) {
         case REQUEST_GATHER:
-            return objectAssign({}, state);
+            return objectAssign({}, state, { fetching: true });
         case RECEIVE_GATHER:
             return objectAssign({}, initialState, {
                 fetching: false,

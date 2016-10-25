@@ -2,7 +2,7 @@ import { Incrementer } from 'utilities/incrementer'
 import { Http } from 'utilities/http'
 import { Resolver } from 'utilities/resolver'
 
-import { GatherReport } from 'models/gather-report'
+import { FullGatherReport } from 'models/full-gather-report'
 
 export const REQUEST_GATHER = Incrementer.increment();
 export const RECEIVE_GATHER = Incrementer.increment();
@@ -13,7 +13,7 @@ function requestGather() {
     };
 }
 
-function receiveGather(gather: GatherReport) {
+function receiveGather(gather: FullGatherReport) {
     return {
         type: RECEIVE_GATHER,
         gather

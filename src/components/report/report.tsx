@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Resolver } from 'utilities/resolver'
+import { push } from 'react-router-redux'
 
-import AppBar from 'material-ui/AppBar'
-import FlatButton from 'material-ui/FlatButton'
 import Paper from 'material-ui/Paper'
 import CircularProgress from 'material-ui/CircularProgress'
 
 import ViewTabs from './view-tabs'
+import AppBar from './app-bar'
 import PlayerPanel from './player-panel'
 import IncrementalPanel from './incremental-panel'
 
@@ -58,6 +58,7 @@ class Report extends React.Component<Props, any> {
 
     public componentWillReceiveProps(props: Props) {
         if (props.params.id !== this.props.params.id) {
+            this.resolver.resolve();
             this.fetchGather(Number(props.params.id));
         }
 
@@ -72,21 +73,23 @@ class Report extends React.Component<Props, any> {
         this.props.dispatch(setViewState(viewState));
     }
 
+    public gotoList() {
+        this.props.dispatch(push('/list'));
+    }
+
+    public gotoGather() {
+        this.props.dispatch(push('/gather/' + this.props.params.id));
+    }
+
     public render() {
         const { fetching, viewState } = this.props;
 
         return (
             <div>
                 <AppBar
-                    style={{ marginBottom: '24px' }}
-                    title="Gatherer"
-                    showMenuIconButton={ false }
-                    iconElementRight={
-                        <FlatButton
-                            onClick={ () => true }
-                            label="Done"
-                        />
-                    }
+                    frozen={ fetching }
+                    close={ this.gotoList.bind(this) }
+                    modify={ this.gotoGather.bind(this) }
                 />
                 <Paper style={{ maxWidth: '1280px', margin: '0 auto' }}>
                     <ViewTabs
