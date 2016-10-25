@@ -7,11 +7,9 @@ import FlatButton from 'material-ui/FlatButton'
 import Paper from 'material-ui/Paper'
 import CircularProgress from 'material-ui/CircularProgress'
 
-import { ViewTabs } from './view-tabs';
-import { AllTable } from './tables/all';
-import { MatchTable } from './tables/match';
-import { UnsortedTable } from './tables/unsorted';
-import { GatherModal } from './gather-modal';
+import ViewTabs from './view-tabs';
+import Table from './tables/table';
+import GatherModal from './gather-modal';
 
 import { Resolver } from 'utilities/resolver';
 
@@ -23,9 +21,6 @@ import { push } from 'react-router-redux'
 
 import { ViewState } from './models/view-state'
 import { GatherForm } from 'models/gather-form.d'
-import { FullReport } from './models/full-report.d'
-import { Match } from './models/match.d'
-import { Event } from './models/event.d'
 
 const styles = {
     display: 'flex',
@@ -40,9 +35,6 @@ interface Props {
     showGatherModal: boolean;
     gatherModel: GatherForm;
     fetching: boolean;
-    all: Array<FullReport>;
-    matches: Array<Match>;
-    unsorted: Array<Event>;
 }
 
 class List extends React.Component<Props, any> {
@@ -114,9 +106,6 @@ class List extends React.Component<Props, any> {
             viewState,
             showGatherModal,
             gatherModel,
-            all,
-            matches,
-            unsorted,
             fetching
         } = this.props;
 
@@ -144,12 +133,7 @@ class List extends React.Component<Props, any> {
                             <CircularProgress />
                         </div>
                     :
-                        viewState === ViewState.All ?
-                            <AllTable reports={ all } />
-                        : viewState === ViewState.Matches ?
-                            <MatchTable reports={ matches } />
-                        :
-                            <UnsortedTable reports={ unsorted } />
+                        <Table />
                     }
                 </Paper>
                 <GatherModal
@@ -174,10 +158,7 @@ const mapStateToProps = state => ({
     viewState: state.list.viewState,
     showGatherModal: state.list.showGatherModal,
     gatherModel: state.list.gatherModel,
-    fetching: state.list.fetching,
-    all: state.list.all,
-    matches: state.list.matches,
-    unsorted: state.list.unsorted
+    fetching: state.list.fetching
 });
 
 export default connect(mapStateToProps)(List);

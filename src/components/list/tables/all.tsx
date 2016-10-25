@@ -1,11 +1,14 @@
 import * as React from 'react'
-import { FullReport } from './models/full-report.d';
+import { Report } from './models/report.d'
+import { FullReport } from './models/full-report.d'
 
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
 import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward'
+import ClickableTableRow from 'components/clickable-table-row'
 
 interface Props {
     reports: Array<FullReport>;
+    clickReport: (report: Report) => void;
 }
 
 export class AllTable extends React.Component<Props, any> {
@@ -14,6 +17,8 @@ export class AllTable extends React.Component<Props, any> {
     }
     
     public render() {
+        const { reports, clickReport } = this.props;
+
         return (
             <Table>
                 <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
@@ -29,17 +34,16 @@ export class AllTable extends React.Component<Props, any> {
                         <TableHeaderColumn style={{ width: '20%' }}>Actions</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
-                <TableBody displayRowCheckbox={ false }>
-                    { this.props.reports.map((report, index) => (
-                            <TableRow key={ index } selectable={ false }>
-                                <TableRowColumn style={{ width: '20%' }}>{ report.player }</TableRowColumn>
-                                <TableRowColumn style={{ width: '30%' }}>{ report.match }</TableRowColumn>
-                                <TableRowColumn style={{ width: '20%' }}>{ report.date }</TableRowColumn>
-                                <TableRowColumn style={{ width: '10%' }}>{ report.actions }</TableRowColumn>
-                                <TableRowColumn style={{ width: '20%' }}>{ report.description }</TableRowColumn>
-                            </TableRow>
-                        ))
-                    }
+                <TableBody displayRowCheckbox={ false } showRowHover={ true }>
+                    { reports.map((report, index) => (
+                        <ClickableTableRow onClick={ () => clickReport(report) } key={ index } selectable={ false }>
+                            <TableRowColumn style={{ width: '20%' }}>{ report.player }</TableRowColumn>
+                            <TableRowColumn style={{ width: '30%' }}>{ report.match }</TableRowColumn>
+                            <TableRowColumn style={{ width: '20%' }}>{ report.date }</TableRowColumn>
+                            <TableRowColumn style={{ width: '10%' }}>{ report.actions }</TableRowColumn>
+                            <TableRowColumn style={{ width: '20%' }}>{ report.description }</TableRowColumn>
+                        </ClickableTableRow>
+                    ))}
                 </TableBody>
             </Table>
         );

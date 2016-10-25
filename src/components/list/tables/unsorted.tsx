@@ -1,11 +1,14 @@
 import * as React from 'react'
-import { Event } from './models/event.d';
+import { Report } from '../models/report.d'
+import { Event } from '../models/event.d';
 
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
 import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward'
+import ClickableTableRow from 'components/clickable-table-row'
 
 interface Props {
     reports: Array<Event>;
+    clickReport: (report: Report) => void;
 }
 
 export class UnsortedTable extends React.Component<Props, any> {
@@ -14,6 +17,8 @@ export class UnsortedTable extends React.Component<Props, any> {
     }
     
     public render() {
+        const { reports, clickReport } = this.props;
+
         return (
             <Table>
                 <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
@@ -24,16 +29,15 @@ export class UnsortedTable extends React.Component<Props, any> {
                         <TableHeaderColumn style={{ width: '30%' }}>Description</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
-                <TableBody displayRowCheckbox={ false }>
-                    { this.props.reports.map((reports, index) => (
-                            <TableRow key={ index } selectable={ false }>
-                                <TableRowColumn style={{ width: '20%' }}>{ reports.player }</TableRowColumn>
-                                <TableRowColumn style={{ width: '30%' }}>{ reports.match }</TableRowColumn>
-                                <TableRowColumn style={{ width: '20%' }}>{ reports.date }</TableRowColumn>
-                                <TableRowColumn style={{ width: '30%' }}>{ reports.description }</TableRowColumn>
-                            </TableRow>
-                        ))
-                    }
+                <TableBody displayRowCheckbox={ false } showRowHover={ true }>
+                    { this.props.reports.map((report, index) => (
+                            <ClickableTableRow onClick={ () => clickReport(report) } key={ index } selectable={ false }>
+                                <TableRowColumn style={{ width: '20%' }}>{ report.player }</TableRowColumn>
+                                <TableRowColumn style={{ width: '30%' }}>{ report.match }</TableRowColumn>
+                                <TableRowColumn style={{ width: '20%' }}>{ report.date }</TableRowColumn>
+                                <TableRowColumn style={{ width: '30%' }}>{ report.description }</TableRowColumn>
+                            </ClickableTableRow>
+                    ))}
                 </TableBody>
             </Table>
         );

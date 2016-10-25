@@ -19,7 +19,7 @@ interface Props {
     valid: boolean;
 }
 
-export class GatherModal extends React.Component<Props, any> {
+export default class GatherModal extends React.Component<Props, any> {
     constructor(props: Props) {
         super(props);
     }
