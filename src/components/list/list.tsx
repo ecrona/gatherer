@@ -7,11 +7,11 @@ import FlatButton from 'material-ui/FlatButton'
 import Paper from 'material-ui/Paper'
 import CircularProgress from 'material-ui/CircularProgress'
 
-import ViewTabs from './view-tabs';
-import Table from './tables/table';
-import GatherModal from './gather-modal';
+import ViewTabs from './view-tabs'
+import Table from './tables/table'
+import GatherModal from './gather-modal'
 
-import { Resolver } from 'utilities/resolver';
+import { Resolver } from 'utilities/resolver'
 
 import { setViewState } from './actions/set-view-state'
 import { toggleGatherModal } from './actions/toggle-gather-modal'
@@ -80,6 +80,10 @@ class List extends React.Component<Props, any> {
         }
 
         this.props = props;
+    }
+
+    public componentWillUnmount() {
+        this.resolver.resolve();
     }
 
     public setViewState(viewState: ViewState) {
