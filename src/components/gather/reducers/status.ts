@@ -5,7 +5,8 @@ import { Half } from '../models/half'
 import {
     SET_TIME,
     SET_STATUS,
-    SET_HALF
+    SET_HALF,
+    RESET
 } from '../actions/status'
 
 import { SYNCHRONIZE } from '../actions/synchronize-modal'
@@ -16,7 +17,9 @@ export const time = function(state = '00:00', action) {
         case SYNCHRONIZE:
             return action.time;
         case SET_HALF:
-            return action.half === Half.First ? '00:00' : '45:00'
+            return action.half === Half.First ? '00:00' : '45:00';
+        case RESET:
+            return '00:00';
     }
 
     return state;
@@ -27,6 +30,7 @@ export const status = function(state = Status.Paused, action) {
         case SET_STATUS:
             return action.status;
         case SET_HALF:
+        case RESET:
             return Status.Paused;
     }
 
@@ -38,6 +42,8 @@ export const half = function(state = Half.First, action) {
         case SET_HALF:
         case SYNCHRONIZE:
             return action.half;
+        case RESET:
+            return Half.First;
     }
 
     return state;

@@ -27,7 +27,8 @@ import { active, half as synchronizeModalHalf, minutes, seconds } from 'componen
 import { viewState as reportViewState } from 'components/report/reducers/view-state'
 import { gather as reportGather } from 'components/report/reducers/gather'
 
-import injectTapEventPlugin = require("react-tap-event-plugin");
+import * as injectTapEventPlugin from 'react-tap-event-plugin'
+
 injectTapEventPlugin();
 
 const rootReducer = combineReducers({

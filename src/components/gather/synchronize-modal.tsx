@@ -15,6 +15,8 @@ import { Half } from './models/half'
 
 interface Props {
     dispatch: (any) => void;
+    time: string;
+    toolbarHalf: Half;
     active: boolean;
     half: Half;
     minutes: string;
@@ -24,6 +26,27 @@ interface Props {
 class SynchronizeModal extends React.Component<Props, any> {
     constructor(props: Props) {
         super(props);
+    }
+
+    public componentWillReceiveProps(props: Props) {
+        // The modal goes from being closed to being opened
+        if (this.props.active === false && props.active === true) {
+            const [ minutes, seconds ] = this.props.time.split(':');
+
+            this.setMinutes(minutes);
+            this.setSeconds(seconds);
+            this.props.dispatch(setHalf(props.toolbarHalf));
+        }
+        
+        this.props = props;
+    }
+
+    private getTime(time: string) {
+        if (time.length > 2) {
+            time = time[0] + time[2];
+        }
+
+        return time;
     }
 
     public getHalfIcon() {
@@ -39,22 +62,12 @@ class SynchronizeModal extends React.Component<Props, any> {
         this.props.dispatch(setHalf(half));
     }
 
-    private getTime(time: string) {
-        if (time.length > 2) {
-            time = time[0] + time[2];
-        }
-
-        return time;
+    public setMinutes(minutes: string) {
+        this.props.dispatch(setMinutes(this.getTime(minutes)));
     }
 
-    public setMinutes(e) {
-        const value = this.getTime(e.target.value);
-        this.props.dispatch(setMinutes(value));
-    }
-
-    public setSeconds(e) {
-        const value = this.getTime(e.target.value);
-        this.props.dispatch(setSeconds(value));
+    public setSeconds(seconds: string) {
+        this.props.dispatch(setSeconds(this.getTime(seconds)));
     }
 
     public synchronize() {
@@ -98,13 +111,13 @@ class SynchronizeModal extends React.Component<Props, any> {
                     <TimeField
                         id="minutes"
                         value={ minutes }
-                        onChange={ this.setMinutes.bind(this) }
+                        onChange={ (e) => this.setMinutes(e.target.value) }
                     />
                     :
                     <TimeField
                         id="seconds"
                         value={ seconds }
-                        onChange={ this.setSeconds.bind(this) }
+                        onChange={ (e) => this.setSeconds(e.target.value) }
                     />
                 </div>
             </Dialog>
@@ -113,6 +126,8 @@ class SynchronizeModal extends React.Component<Props, any> {
 }
 
 const mapStateToProps = state => ({
+    time: state.gather.time,
+    toolbarHalf: state.gather.half,
     active: state.gather.synchronizeModal.active,
     half: state.gather.synchronizeModal.half,
     minutes: state.gather.synchronizeModal.minutes,

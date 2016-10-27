@@ -20,7 +20,7 @@ import StarHalf from 'material-ui/svg-icons/toggle/star-half'
 
 import SynchronizeModal from './synchronize-modal'
 
-import { setTime, setStatus, setHalf } from './actions/status'
+import { setTime, setStatus, setHalf, reset } from './actions/status'
 import { toggleActive } from './actions/synchronize-modal'
 
 import { Status } from './models/status'
@@ -46,6 +46,11 @@ class Toolbar extends React.Component<Props, any> {
         super(props);
     }
 
+    public componentWillUnmount() {
+        this.cancelInterval();
+        this.props.dispatch(reset());
+    }
+
     private request() {
         this.elapsedTime = new Date();
         let diff = this.elapsedTime - this.startTime;
@@ -67,6 +72,18 @@ class Toolbar extends React.Component<Props, any> {
         this.interval = requestAnimationFrame(this.request.bind(this));
     }
 
+    private cancelInterval() {
+        cancelAnimationFrame(this.interval);
+        this.rest += Math.floor((this.elapsedTime - this.startTime) / 1000) * 1000;
+        this.props.dispatch(setStatus(Status.Paused));
+    }
+
+    private calculateRest(time: string): number {
+        const [ minutes, seconds ] = time.split(':');
+
+        return (Number(minutes) * 60 + Number(seconds)) * 1000;
+    }
+
     public getStatusIcon() {
         if (this.props.status === Status.Paused) {
             return <AvPlayArrow style={{ margin: '6px' }} />
@@ -86,12 +103,11 @@ class Toolbar extends React.Component<Props, any> {
     public toggleStatus() {
         if (this.props.status === Status.Paused) {
             this.props.dispatch(setStatus(Status.Playing));
+            this.rest = this.calculateRest(this.props.time);
             this.startTime = new Date();
             this.interval = requestAnimationFrame(this.request.bind(this));
         } else {
-            cancelAnimationFrame(this.interval);
-            this.rest += Math.floor((this.elapsedTime - this.startTime) / 1000) * 1000;
-            this.props.dispatch(setStatus(Status.Paused));
+            this.cancelInterval();
         }
     }
 
@@ -99,12 +115,11 @@ class Toolbar extends React.Component<Props, any> {
         const half = this.props.half === Half.First ? Half.Second : Half.First;
         cancelAnimationFrame(this.interval);
         this.props.dispatch(setHalf(half));
-        
-        if (half === Half.First) {
-            this.rest = 0;
-        } else if (half === Half.Second) {
-            this.rest = 2700000; // 45 minutes
-        }
+    }
+
+    public openSynchronizeModal() {
+        this.cancelInterval();
+        this.props.dispatch(toggleActive(true));
     }
 
     public render() {
@@ -142,7 +157,7 @@ class Toolbar extends React.Component<Props, any> {
                         disabled={ fetching }
                         icon={ <Sync style={{ margin: '6px' }} /> }
                         secondary={ true }
-                        onClick={ () => dispatch(toggleActive(true)) }
+                        onClick={ this.openSynchronizeModal.bind(this) }
                     />
                     <SynchronizeModal />
                 </ToolbarGroup>
