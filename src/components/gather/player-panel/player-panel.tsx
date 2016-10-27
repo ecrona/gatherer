@@ -81,8 +81,6 @@ class PlayerPanel extends React.Component<Props, any> {
             popupLoading
         } = this.props;
 
-        console.log(this.props)
-
         return (
             <div style={{ display: 'flex', padding: '10px 5px 10px 15px' }}>
                 <PlayerCard
@@ -97,7 +95,7 @@ class PlayerPanel extends React.Component<Props, any> {
                     increaseAction={ (action: Action) => dispatch(increaseSecondaryPlayerAction(action, this.newResolver())) }
                     decreaseAction={ (action: Action) => dispatch(decreaseSecondaryPlayerAction(action, this.newResolver())) }
                     popupLoading={ popupLoading }
-                    closePopup={ () => dispatch(close()) }
+                    closePopup={ this.closePopup.bind(this) }
                 />
                 <div style={{ padding: '5px' }} />
                 <PlayerCard
