@@ -2,11 +2,11 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import AppBar from 'material-ui/AppBar'
 import FlatButton from 'material-ui/FlatButton'
 import Paper from 'material-ui/Paper'
 import CircularProgress from 'material-ui/CircularProgress'
 
+import AppBar from './app-bar'
 import ViewTabs from './view-tabs'
 import Table from './tables/table'
 import GatherModal from './gather-modal'
@@ -120,17 +120,7 @@ class List extends React.Component<Props, any> {
 
         return (
             <div>
-                <AppBar
-                    style={{ marginBottom: '24px' }}
-                    title="Gatherer"
-                    showMenuIconButton={ false }
-                    iconElementRight={
-                        <FlatButton
-                            onClick={ this.openGatherModal.bind(this) }
-                            label="Gather"
-                        />
-                    }
-                />
+                <AppBar clickGather={ this.openGatherModal.bind(this) } />
                 <Paper style={{ maxWidth: '1280px', margin: '0 auto' }}>
                     <ViewTabs
                         setViewState={ this.setViewState.bind(this) }
