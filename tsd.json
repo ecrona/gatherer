@@ -12,7 +12,7 @@
       "commit": "084e55916674ff7128722bf72150aa55acea08d9"
     },
     "react/react.d.ts": {
-      "commit": "084e55916674ff7128722bf72150aa55acea08d9"
+      "commit": "44be13ae844ec0721109542d5902e41438d72855"
     },
     "react/react-dom.d.ts": {
       "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
@@ -49,6 +49,18 @@
     },
     "react-router-redux/react-router-redux.d.ts": {
       "commit": "084e55916674ff7128722bf72150aa55acea08d9"
+    },
+    "react/react-addons-test-utils.d.ts": {
+      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+    },
+    "assertion-error/assertion-error.d.ts": {
+      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+    },
+    "chai/chai.d.ts": {
+      "commit": "44be13ae844ec0721109542d5902e41438d72855"
     }
   }
 }
